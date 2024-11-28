@@ -3,69 +3,80 @@ import java.util.Scanner;
 public class Main {
     static StringBuilder result;
     static String board;
-
+    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         board = sc.nextLine();
         result = new StringBuilder(board);
-
-        if (solve(0)) {
-            System.out.println(result.toString());
-        } else {
+        
+        // board가 'X'인 경우는 바로 실패
+        if (board.equals("X")) {
             System.out.println("-1");
+            return;
         }
+        
+        checkIsX(0);
+        System.out.println(result.toString());
     }
-
-    private static boolean solve(int idx) {
-        // 끝까지 도달했다면 성공
-        if (idx == board.length()) {
-            return true;
+    
+    private static void checkIsX(int idx) {
+        // 끝까지 도달했거나 이미 실패한 경우
+        if (idx >= result.length() || result.toString().equals("-1")) {
+            return;
         }
-
-        // 현재 위치가 '.'이면 다음 위치로
+        
+        // 현재 위치가 '.'이면 다음으로
         if (board.charAt(idx) == '.') {
-            return solve(idx + 1);
+            checkIsX(idx + 1);
+            return;
         }
-
+        
         // 현재 위치가 'X'일 때
         if (board.charAt(idx) == 'X') {
-            // AAAA로 덮을 수 있는지 확인
-            if (idx + 3 < board.length() &&
-                    board.charAt(idx + 1) == 'X' &&
-                    board.charAt(idx + 2) == 'X' &&
-                    board.charAt(idx + 3) == 'X') {
-
-                // AAAA로 덮기
-                for (int i = 0; i < 4; i++) {
-                    result.setCharAt(idx + i, 'A');
-                }
-
-                if (solve(idx + 4)) {
-                    return true;
-                }
-
-                // 실패시 원상복구
-                for (int i = 0; i < 4; i++) {
-                    result.setCharAt(idx + i, 'X');
-                }
+            // 다음 위치 체크 전에 범위 확인
+            if (idx + 1 >= board.length()) {
+                result.setLength(0);
+                result.append("-1");
+                return;
             }
-
-            // BB로 덮을 수 있는지 확인
-            if (idx + 1 < board.length() && board.charAt(idx + 1) == 'X') {
-                // BB로 덮기
+            
+            // X. 패턴 체크
+            if (board.charAt(idx + 1) == '.') {
+                result.setLength(0);
+                result.append("-1");
+                return;
+            }
+            
+            // XX 패턴에서 끝나거나 XX. 패턴이면 BB로 덮기
+            if (idx + 2 >= board.length() || board.charAt(idx + 2) == '.') {
                 result.setCharAt(idx, 'B');
                 result.setCharAt(idx + 1, 'B');
-
-                if (solve(idx + 2)) {
-                    return true;
+                if (idx + 2 < board.length()) {
+                    checkIsX(idx + 2);
                 }
-
-                // 실패시 원상복구
-                result.setCharAt(idx, 'X');
-                result.setCharAt(idx + 1, 'X');
+                return;
+            }
+            
+            // XXX 이상 패턴 체크
+            if (board.charAt(idx + 2) == 'X') {
+                // XXXX 패턴 체크 전에 범위 확인
+                if (idx + 3 >= board.length()) {
+                    result.setLength(0);
+                    result.append("-1");
+                    return;
+                }
+                
+                if (board.charAt(idx + 3) == 'X') {
+                    result.setCharAt(idx, 'A');
+                    result.setCharAt(idx + 1, 'A');
+                    result.setCharAt(idx + 2, 'A');
+                    result.setCharAt(idx + 3, 'A');
+                    checkIsX(idx + 4);
+                } else {
+                    result.setLength(0);
+                    result.append("-1");
+                }
             }
         }
-
-        return false;
     }
 }
