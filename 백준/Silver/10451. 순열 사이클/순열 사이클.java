@@ -1,12 +1,12 @@
 import java.util.*;
 
 public class Main {
-        static int T, N;
+    static int T, N;
     static int[] visited;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         T = sc.nextInt();
-        StringBuilder result = new StringBuilder();
         for (int t = 0; t < T; t++) {
             N = sc.nextInt();
             visited = new int[N + 1];
@@ -14,9 +14,8 @@ public class Main {
             for (int i = 1; i <= N; i++) {
                 permutation[i] = sc.nextInt();
             }
-            result.append(countCycle(permutation)).append("\n");
+            System.out.println(countCycle(permutation));
         }
-        System.out.print(result);
     }
 
     public static int countCycle(int[] permutation) {
