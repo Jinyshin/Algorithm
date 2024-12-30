@@ -11,7 +11,7 @@ WITH AVAILABLE_CARS AS (
             H.END_DATE < '2022-11-01' OR H.START_DATE > '2022-11-30'
         )
     WHERE
-        (H.HISTORY_ID IS NULL) -- 대여 기록이 없거나 11월 내 대여 가능
+        H.HISTORY_ID IS NULL
         AND C.CAR_TYPE IN ('세단', 'SUV')
 ),
 FEE_CALCULATION AS (
@@ -20,7 +20,7 @@ FEE_CALCULATION AS (
         AC.CAR_TYPE,
         FLOOR(
             AC.DAILY_FEE * 30 *
-            (1 - COALESCE(DP.DISCOUNT_RATE, 0) / 100)
+            (1 - DP.DISCOUNT_RATE / 100)
         ) AS FEE
     FROM
         AVAILABLE_CARS AC
