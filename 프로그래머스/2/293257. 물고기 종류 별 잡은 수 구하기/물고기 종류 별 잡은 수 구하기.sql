@@ -17,3 +17,7 @@ FROM FISHCOUNT C
 LEFT JOIN FISH_NAME_INFO I
     ON C.FISH_TYPE = I.FISH_TYPE
 ORDER BY FISH_COUNT DESC;
+
+# 문제에서 요구하는 것은 FISH_NAME_INFO의 물고기 종류를 기준으로 출력하는 것이다.
+# 따라서, 위 쿼리문에서 LEFT JOIN을 해야지만 생략되는 데이터가 없음.
+    # INNER JOIN을 하면, FISHCOUNT 에는 없는데 FISH_NAME_INFO에는 있는 물고기들이 생략된다.
