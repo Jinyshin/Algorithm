@@ -15,9 +15,9 @@ public class Main {
         }
 
         int currIndex = 0;
-        while (!balloons.isEmpty()) {
+        while(!balloons.isEmpty()) {
             Balloon target = balloons.remove(currIndex);
-            sb.append(target.index).append(" ");
+            sb.append(target.number).append(" ");
 
             if (balloons.isEmpty()) break;
 
@@ -25,23 +25,22 @@ public class Main {
 
             if (move < 0) {
                 currIndex = (currIndex + move) % balloons.size();
-                if (currIndex < 0) currIndex += balloons.size(); // 음수 보정
-            }
-            else {
+                if (currIndex < 0) currIndex += balloons.size();
+            } else {
                 currIndex = (currIndex + move - 1) % balloons.size();
             }
         }
 
-        System.out.println(sb.toString().trim());
+        System.out.print(sb);
         br.close();
     }
 }
 
 class Balloon {
-    int index, value;
+    int number, value;
 
-    public Balloon(int index, int value) {
-        this.index = index;
+    public Balloon(int number, int value) {
+        this.number = number;
         this.value = value;
     }
 }
