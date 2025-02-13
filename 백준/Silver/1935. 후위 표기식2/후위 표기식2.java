@@ -7,18 +7,18 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
         char[] postfix = br.readLine().toCharArray();
         Stack<Double> stack = new Stack<>();
+        Set<Character> operators = Set.of('+', '-', '*', '/');
 
         HashMap<Character, Double> map = new HashMap<>();
-        for (char c : postfix) { // 여기를 틀렸었음. 그냥 숫자길이가 아니라, postfix 의 길이만큼 순회해야한다고!
-            if (c != '+' && c != '-' && c != '/' && c != '*' && !map.containsKey(c)) {
-                StringTokenizer st = new StringTokenizer(br.readLine());
-                int operand = Integer.parseInt(st.nextToken());
-                map.put(c, (double) operand); // 이거 맞나?
+        for (char c : postfix) {
+            // 불필요한 StringTokenizer 제거
+            if (!operators.contains(c) && !map.containsKey(c)) {
+                map.put(c, Double.parseDouble(br.readLine()));
             }
         }
 
         for(char ch: postfix) {
-            if (ch != '+' && ch != '-' && ch != '/' && ch != '*') {
+            if (!operators.contains(ch)) {
                 stack.push(map.get(ch));
             } else {
                 double b = stack.pop();
@@ -33,7 +33,7 @@ public class Main {
             }
         }
 
-        System.out.printf("%.2f\n", stack.pop());  // 소수점 둘째 자리까지 출력
+        System.out.printf("%.2f\n", stack.pop());
         br.close();
     }
 }
