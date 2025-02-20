@@ -16,16 +16,20 @@ public class Main {
         
         while (q.size() > 1) {
             Map<String, Integer> frontStudent = q.poll();
-            int num = frontStudent.values().iterator().next(); // 맨앞학생의 학번
+            int num = frontStudent.values().iterator().next(); // 맨앞 학생의 학번
             
-            for (int i = 0; i < num - 1; i++) {
-                Map<String, Integer> nextStudent = q.poll();
-                q.offer(nextStudent);
+            // 최소 회전 수만큼만 큐를 회전시킴
+            for (int i = 0; i < (num - 1) % q.size(); i++) {
+                q.offer(q.poll());
             }
             
-            Map<String, Integer> love = q.poll();
+            // for (int i = 0; i < num - 1; i++) {
+            //     q.offer(q.poll());
+            // }
+            
+            q.poll();
         }
         
-        System.out.println(q.poll().keySet().iterator().next());
+        System.out.println(q.peek().keySet().iterator().next());
     }
 }
