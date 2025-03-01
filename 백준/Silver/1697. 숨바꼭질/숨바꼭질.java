@@ -11,7 +11,7 @@ public class Main {
         boolean[] visited = new boolean[100001];
 
         q.add(new int[]{n, 0});
-        visited[n] = false;
+        visited[n] = true;
 
         while(!q.isEmpty()) {
             int[] curr = q.poll();
