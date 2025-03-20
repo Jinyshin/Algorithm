@@ -20,14 +20,11 @@ public class Main {
             }
         }
 
-        // 장애물 3개 배치 (백트래킹)
         placeO(0);
 
-        // 결과 출력
         System.out.println(avoid ? "YES" : "NO");
     }
 
-    // 장애물 3개 설치 (백트래킹)
     static void placeO(int count) {
         if (count == 3) {
             if (isOk()) avoid = true;
