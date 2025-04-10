@@ -1,56 +1,55 @@
 import java.util.*;
+import java.io.*;
 
-public class Main {
-    static int n, m;
-    static int[] dy = new int[]{-1, 1, 0, 0}; // 상하좌우
-    static int[] dx = new int[]{0, 0, -1, 1};
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        m = sc.nextInt();
-        sc.nextLine();
+class Main {
+    static int N, M;
+    static int[][] maze;
+    static boolean[][] visited;
+    static int[] dx = {0, 0, -1, 1};
+    static int[] dy = {-1, 1, 0, 0};
 
-        int[][] maze = new int[n][m];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-        for(int i = 0; i < n; i++) {
-            String line = sc.nextLine();
-            for (int j = 0; j < m; j++) {
-                maze[i][j] = line.charAt(j) - '0';
+        maze = new int[N][M];
+        visited = new boolean[N][M];
+
+        for (int r = 0; r < N; r++) {
+            String row = br.readLine();
+            for (int c = 0; c < M; c++) {
+                maze[r][c] = row.charAt(c) - '0';
             }
         }
 
-        System.out.println(bfs(0, 0, maze));
+        bfs(0, 0);
+        System.out.println(maze[N - 1][M - 1]);
     }
 
-    public static int bfs(int row, int col, int[][] maze) {
-        Queue<int[]> q = new LinkedList<>();
-        q.add(new int[]{row, col}); // 시작 위치값을 추가
+    public static void bfs(int startY, int startX) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{startY, startX});
+        visited[startY][startX] = true;
 
-        while (true) {
-            int[] current = q.poll();
-            int y = current[0];
-            int x = current[1];
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int y = curr[0];
+            int x = curr[1];
 
-            if (y == n - 1 && x == m - 1) {
-                return maze[y][x];
-            }
-
-            // 상하좌우 이동
             for (int i = 0; i < 4; i++) {
                 int ny = y + dy[i];
                 int nx = x + dx[i];
 
-                if (ny >= 0 && ny < n && nx >= 0 && nx < m && maze[ny][nx] == 1) {
-                    maze[ny][nx] = maze[y][x] + 1; // 방문 횟수 갱신
-                    q.add(new int[]{ny, nx}); // 큐에 추가
+                if (ny >= 0 && ny < N && nx >= 0 && nx < M) {
+                    if (!visited[ny][nx] && maze[ny][nx] == 1) {
+                        visited[ny][nx] = true;
+                        maze[ny][nx] = maze[y][x] + 1;
+                        queue.add(new int[]{ny, nx});
+                    }
                 }
             }
         }
     }
 }
-
-/*
-인접한 칸이면서 1만 탐색 가능
-최소칸수 -> bfs
-매번 탐색할 때마다 기존 큐에 조건에 부합하는 인접 좌표를 추가한다.
-*/
