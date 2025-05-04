@@ -52,6 +52,7 @@ class Solution {
 - input: 채팅방 출입, 닉네임 변경 기록 문자열 배열 record
 - output: 모든 기록 처리 후 최종적으로 방 개설자가 보게 되는 메시지를 문자열 배열 형태로 return
 
+## 생각 1. 닉네임 변경 시 -> 이전 닉네임 메시지 전부 수정하는 방식
 for(String r : record):
     명령어 파싱 진행
     if Enter:
@@ -69,9 +70,12 @@ for(String r : record):
                 닉네임 = 현재 닉네임
 
 시간복잡도
-    - 최악의 경우 10^5 * 10^5 = 10^10
+    - 최악의 경우 10^10, O(n^2)
 
 ---
+## 생각 2.
+유저 아이디를 기준으로 -> 각 메시지 확인, 유저 상태가 Change/Enter일 때 닉네임 변경
+{유저 아이디 : 닉네임} 해시맵 생각
 
 - Map<String, String>: uid -> 닉네임 매핑
 - List<String[]>: uid, Enter/Change/Leave
@@ -83,7 +87,7 @@ for each record:
 결과 리스트를 순회: UID->닉네임 변환해서 메시지 완성
 
 시간복잡도
-    - 최악의 경우 10^5 (O(n))
+    - 최악의 경우 10^5, O(n)
     
 => 한 번에 result 문장을 만들겠다는 생각 X, 변동 가능성이 있는 것만 따로 떼어서 생각하기
 */
