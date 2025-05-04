@@ -80,7 +80,7 @@ for(String r : record):
 for each record:
     Enter/Change → UID의 닉네임 Map 업데이트
     Enter/Leave → 결과 리스트에  (UID, 명령) 저장
-마지막에 결과 리스트를 순회하며, UID를 Map에서 닉네임으로 변환해서 메시지 완성
+결과 리스트를 순회: UID->닉네임 변환해서 메시지 완성
 
 시간복잡도
     - 최악의 경우 10^5 (O(n))
